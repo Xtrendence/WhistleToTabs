@@ -2,12 +2,27 @@
 <html>
   <head>
     <title>Whistle to Tabs</title>
-    <script src="https://unpkg.com/web-audio-daw"></script>
+    <script src="./node_modules/web-audio-daw/build/wad.min.js"></script>
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <button id="start">Start</button>
-    <button id="stop">Stop</button>
+    <div class="buttons">
+      <button id="start">Start</button>
+      <button class="active" id="stop">Stop</button>
+    </div>
+    <div>
+      <input id="whistle" type="checkbox" />
+      <label for="whistle">Whistle Mode</label>
+    </div>
+    <div>
+      <input id="multiple" type="checkbox" />
+      <label for="multiple">Show Multiple</label>
+    </div>
     <div id="output"></div>
+    <div class="current-wrapper">
+      <span id="current-note">-</span>
+      <span id="current-pitch">-</span>
+    </div>
     <script src="./main.js"></script>
   </body>
 </html>
