@@ -76,6 +76,9 @@ function stop() {
   buttonStart.classList.remove('active');
   buttonStop.classList.add('active');
 
+  clearNotes();
+  clearCurrent();
+
   voice.stop();
   config.recording = false;
 }
@@ -111,6 +114,11 @@ function clearNotes() {
   for (let i = 0; i < current.length; i++) {
     current[i].classList.remove('active');
   }
+}
+
+function clearCurrent() {
+  spanCurrentNote.textContent = '-';
+  spanCurrentPitch.textContent = '-';
 }
 
 function detectNote(note) {

@@ -172,4 +172,6 @@ button.active {
 .current-wrapper span {
   background: var(--main-fifth);
   padding: 10px;
+  margin: 4px;
+  border-radius: var(--border-radius);
 }
