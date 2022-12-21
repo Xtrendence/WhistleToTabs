@@ -7,6 +7,9 @@ const spanCurrentPitch = document.getElementById('current-pitch');
 
 const inputWhistle = document.getElementById('whistle');
 const inputMultiple = document.getElementById('multiple');
+const inputKey = document.getElementById('key');
+const inputMinor = document.getElementById('minor');
+const inputPentatonic = document.getElementById('pentatonic');
 
 const voice = new Wad({ source: 'mic' });
 
@@ -97,12 +100,43 @@ function getNoteColor(note) {
   }
 }
 
+function getFretForKey(key) {
+  key = key.toLowerCase();
+
+  switch (key) {
+    case 'e':
+      return 0;
+    case 'f':
+      return 1;
+    case 'f#':
+      return 2;
+    case 'g':
+      return 3;
+    case 'g#':
+      return 4;
+    case 'a':
+      return 5;
+    case 'a#':
+      return 6;
+    case 'b':
+      return 7;
+    case 'c':
+      return 8;
+    case 'c#':
+      return 9;
+    case 'd':
+      return 10;
+    case 'd#':
+      return 11;
+  }
+}
+
 function generateNoteColumn(column, notes) {
   let html = `<div class="header"><span>${column}</span></div>`;
 
   notes.reverse().forEach((note, index) => {
     html += `
-			<div class="${note} ${getNoteColor(note)}"><span>${note}</span></div>
+			<div class="note ${note} ${getNoteColor(note)}"><span>${note}</span></div>
 		`;
   });
 
@@ -130,21 +164,31 @@ function detectNote(note) {
     if (elements) {
       if (inputMultiple.checked) {
         for (let i = 0; i < elements.length; i++) {
-          elements[i]?.classList.add('active');
+          if (!elements[i]?.classList.contains('disabled')) {
+            elements[i]?.classList.add('active');
 
-          setTimeout(() => {
-            elements[i]?.classList.remove('active');
-          }, 1000);
+            setTimeout(() => {
+              elements[i]?.classList.remove('active');
+            }, 1000);
+          } else {
+            // TODO: Suggest similar note.
+            const fret = parseInt(
+              elements[i].parentElement.getAttribute('data-fret')
+            );
+          }
         }
       } else {
         clearNotes();
 
         const element = elements[0];
-        element?.classList.add('active');
 
-        setTimeout(() => {
-          element?.classList.remove('active');
-        }, 1000);
+        if (!element?.classList.contains('disabled')) {
+          element?.classList.add('active');
+
+          setTimeout(() => {
+            element?.classList.remove('active');
+          }, 1000);
+        }
       }
     }
   }
@@ -159,11 +203,139 @@ function adjustWhistle(note, reduction) {
   }
 }
 
+function disableAllNotes() {
+  const elements = document.getElementsByClassName('note');
+
+  Array.from(elements).forEach((element) => {
+    element.classList.add('disabled');
+  });
+}
+
+function enableAllNotes() {
+  const elements = document.getElementsByClassName('note');
+
+  Array.from(elements).forEach((element) => {
+    element.classList.remove('disabled');
+  });
+}
+
+function enableColumnNotes(fret, notes) {
+  const column = document.getElementsByClassName(`fret-${fret}`)[0];
+  const columnNotes = column.getElementsByTagName('div');
+
+  Array.from(columnNotes).forEach((note, index) => {
+    if (notes.includes(index)) {
+      note.classList.remove('disabled');
+    }
+  });
+}
+
+function showPentatonic(fret) {
+  if (fret >= 4) {
+    enableColumnNotes(fret - 4, [2]);
+  }
+
+  if (fret >= 3) {
+    enableColumnNotes(fret - 3, [3, 4]);
+  }
+
+  if (fret >= 2) {
+    enableColumnNotes(fret - 2, [1, 2, 5, 6]);
+  }
+
+  // Key
+  enableColumnNotes(fret, [1, 2, 3, 4, 5, 6]);
+
+  enableColumnNotes(fret + 2, [3, 4, 5]);
+  enableColumnNotes(fret + 3, [1, 2, 6]);
+  enableColumnNotes(fret + 4, [3]);
+  enableColumnNotes(fret + 5, [1, 2, 4, 5, 6]);
+  enableColumnNotes(fret + 7, [1, 3, 4, 5, 6]);
+  enableColumnNotes(fret + 8, [2]);
+  enableColumnNotes(fret + 9, [3, 4]);
+  enableColumnNotes(fret + 10, [1, 2, 5, 6]);
+}
+
+function showAeolian(fret) {
+  if (fret >= 4) {
+    enableColumnNotes(fret - 4, [1, 2, 6]);
+  }
+
+  if (fret >= 3) {
+    enableColumnNotes(fret - 3, [3, 4, 5]);
+  }
+
+  if (fret >= 2) {
+    enableColumnNotes(fret - 2, [1, 2, 4, 5, 6]);
+  }
+
+  if (fret >= 1) {
+    enableColumnNotes(fret - 1, [3]);
+  }
+
+  // Key
+  enableColumnNotes(fret, [1, 2, 3, 4, 5, 6]);
+
+  enableColumnNotes(fret + 1, [2]);
+  enableColumnNotes(fret + 2, [1, 3, 4, 5, 6]);
+  enableColumnNotes(fret + 3, [1, 2, 5, 6]);
+  enableColumnNotes(fret + 4, [3, 4]);
+  enableColumnNotes(fret + 5, [1, 2, 3, 4, 5, 6]);
+  enableColumnNotes(fret + 7, [1, 2, 3, 4, 5, 6]);
+  enableColumnNotes(fret + 8, [1, 2, 6]);
+  enableColumnNotes(fret + 9, [3, 4, 5]);
+  enableColumnNotes(fret + 10, [1, 2, 4, 5, 6]);
+}
+
+function detectKey() {
+  try {
+    const key = inputKey.value;
+
+    const headers = document.getElementsByClassName('header');
+
+    Array.from(headers).forEach((header) =>
+      header.classList.remove('active-key')
+    );
+
+    if (empty(key)) {
+      enableAllNotes();
+    } else {
+      disableAllNotes();
+
+      const fret = inputMinor.checked
+        ? getFretForKey(key)
+        : getFretForKey(key) - 2;
+
+      headers[fret].classList.add('active-key');
+
+      if (inputPentatonic.checked) {
+        showPentatonic(fret);
+      } else {
+        showAeolian(fret);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 Object.keys(notes).forEach((key, index) => {
-  divOutput.innerHTML += `<div class="column">${generateNoteColumn(
+  divOutput.innerHTML += `<div data-fret="${index}" class="column fret-${index}">${generateNoteColumn(
     key,
     notes[key]
   )}</div>`;
+});
+
+inputMinor.addEventListener('change', () => {
+  detectKey();
+});
+
+inputPentatonic.addEventListener('change', () => {
+  detectKey();
+});
+
+inputKey.addEventListener('input', () => {
+  detectKey();
 });
 
 buttonStart.addEventListener('click', () => {
@@ -173,3 +345,21 @@ buttonStart.addEventListener('click', () => {
 buttonStop.addEventListener('click', () => {
   stop();
 });
+
+function empty(value) {
+  if (
+    typeof value === 'object' &&
+    value !== null &&
+    Object.keys(value).length === 0
+  ) {
+    return true;
+  }
+  if (
+    value === null ||
+    typeof value === 'undefined' ||
+    value.toString().trim() === ''
+  ) {
+    return true;
+  }
+  return false;
+}

@@ -99,6 +99,12 @@ button:hover {
   background: var(--accent-second);
 }
 
+input[type='text'] {
+  padding: 10px;
+  border-radius: var(--border-radius);
+  margin-top: 10px;
+}
+
 .buttons {
   margin-bottom: 20px;
 }
@@ -117,6 +123,9 @@ button.active {
 .column:first-of-type {
   background: var(--main-contrast);
 }
+.column:nth-of-type(13) {
+  background: var(--main-contrast);
+}
 .column {
   display: flex;
   flex-direction: column;
@@ -127,6 +136,9 @@ button.active {
 }
 .column .header {
   background: var(--main-first);
+}
+.column .header.active-key {
+  background: var(--accent-fourth);
 }
 .column div {
   padding: 8px;
@@ -161,6 +173,10 @@ button.active {
 }
 .column:nth-of-type(odd) div.active {
   background: rgb(150, 69, 69);
+}
+
+.column div.disabled {
+  background: var(--main-second) !important;
 }
 
 .current-wrapper {
