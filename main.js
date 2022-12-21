@@ -7,6 +7,7 @@ const spanCurrentPitch = document.getElementById('current-pitch');
 
 const inputWhistle = document.getElementById('whistle');
 const inputMultiple = document.getElementById('multiple');
+const inputSingle = document.getElementById('single');
 const inputKey = document.getElementById('key');
 const inputMinor = document.getElementById('minor');
 const inputPentatonic = document.getElementById('pentatonic');
@@ -136,7 +137,9 @@ function generateNoteColumn(column, notes) {
 
   notes.reverse().forEach((note, index) => {
     html += `
-			<div class="note ${note} ${getNoteColor(note)}"><span>${note}</span></div>
+			<div class="note ${note} ${getNoteColor(note)} index-${
+      index + 1
+    }"><span>${note}</span></div>
 		`;
   });
 
@@ -155,11 +158,19 @@ function clearCurrent() {
   spanCurrentPitch.textContent = '-';
 }
 
-function detectNote(note) {
-  note = inputWhistle.checked ? adjustWhistle(note, 2) : note;
+function detectNote(originalNote) {
+  const note = inputWhistle.checked
+    ? adjustWhistle(originalNote, 2)
+    : originalNote;
 
   if (note) {
-    const elements = document.getElementsByClassName(note);
+    let elements = document.getElementsByClassName(note);
+
+    if (inputSingle.checked) {
+      elements = Array.from(elements).filter((element) => {
+        return element.classList.contains('index-1');
+      });
+    }
 
     if (elements) {
       if (inputMultiple.checked) {
@@ -168,7 +179,9 @@ function detectNote(note) {
             elements[i]?.classList.add('active');
 
             setTimeout(() => {
-              elements[i]?.classList.remove('active');
+              if (spanCurrentNote.textContent !== note) {
+                elements[i]?.classList.remove('active');
+              }
             }, 1000);
           } else {
             // TODO: Suggest similar note.
@@ -180,13 +193,20 @@ function detectNote(note) {
       } else {
         clearNotes();
 
-        const element = elements[0];
+        let element;
+        Array.from(elements).forEach((node) => {
+          if (!element && !node.classList.contains('disabled')) {
+            element = node;
+          }
+        });
 
         if (!element?.classList.contains('disabled')) {
           element?.classList.add('active');
 
           setTimeout(() => {
-            element?.classList.remove('active');
+            if (spanCurrentNote.textContent !== note) {
+              element?.classList.remove('active');
+            }
           }, 1000);
         }
       }
