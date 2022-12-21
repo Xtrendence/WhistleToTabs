@@ -56,7 +56,6 @@ body {
   color: var(--main-contrast);
   margin: 0;
   padding: 20px;
-  overflow: hidden;
 }
 input,
 button {
@@ -190,4 +189,36 @@ button.active {
   padding: 10px;
   margin: 4px;
   border-radius: var(--border-radius);
+}
+
+#tabs {
+  font-size: 0;
+}
+
+#tabs .block {
+  font-size: 14px;
+  display: inline-block;
+  margin-bottom: 20px;
+  color: var(--main-contrast);
+}
+
+#tabs .line-2,
+#tabs .line-3,
+#tabs .line-4 {
+  height: 1px;
+  background: var(--main-contrast);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#tabs .line-2 {
+  width: 28px;
+}
+
+#tabs .line-3 {
+  width: 100%;
+}
+
+#tabs .line-4 {
+  width: 100%;
 }

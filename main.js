@@ -2,6 +2,8 @@ const buttonStart = document.getElementById('start');
 const buttonStop = document.getElementById('stop');
 
 const divOutput = document.getElementById('output');
+const divTabs = document.getElementById('tabs');
+
 const spanCurrentNote = document.getElementById('current-note');
 const spanCurrentPitch = document.getElementById('current-pitch');
 
@@ -62,12 +64,17 @@ function start() {
 
   const logPitch = () => {
     if (config.recording) {
+      const currentNote = spanCurrentNote.textContent;
+
       if (tuner?.noteName) {
         spanCurrentNote.textContent = tuner.noteName;
         spanCurrentPitch.textContent = tuner.pitch;
       }
 
-      detectNote(tuner.noteName);
+      detectNote(
+        tuner.noteName,
+        tuner.noteName && currentNote !== tuner.noteName
+      );
 
       requestAnimationFrame(logPitch);
     }
@@ -137,7 +144,9 @@ function generateNoteColumn(column, notes) {
 
   notes.reverse().forEach((note, index) => {
     html += `
-			<div class="note ${note} ${getNoteColor(note)} index-${
+			<div data-fret="${column}" data-index="${
+      index + 1
+    }" class="note ${note} ${getNoteColor(note)} index-${
       index + 1
     }"><span>${note}</span></div>
 		`;
@@ -158,7 +167,49 @@ function clearCurrent() {
   spanCurrentPitch.textContent = '-';
 }
 
-function detectNote(originalNote) {
+function outputTab(fret, index) {
+  const line =
+    fret > 9 ? '<div class="line-4"></div>' : '<div class="line-3"></div>';
+
+  let output = `
+		<div class="block">
+			${
+        index === 1
+          ? '<div class="line-2"></div> ' + fret + ' <div class="line-2"></div>'
+          : line
+      }<br/>
+			${
+        index === 2
+          ? '<div class="line-2"></div> ' + fret + ' <div class="line-2"></div>'
+          : line
+      }<br/>
+			${
+        index === 3
+          ? '<div class="line-2"></div> ' + fret + ' <div class="line-2"></div>'
+          : line
+      }<br/>
+			${
+        index === 4
+          ? '<div class="line-2"></div> ' + fret + ' <div class="line-2"></div>'
+          : line
+      }<br/>
+			${
+        index === 5
+          ? '<div class="line-2"></div> ' + fret + ' <div class="line-2"></div>'
+          : line
+      }<br/>
+			${
+        index === 6
+          ? '<div class="line-2"></div> ' + fret + ' <div class="line-2"></div>'
+          : line
+      }<br/>
+		</div>
+	`;
+
+  divTabs.innerHTML += output;
+}
+
+function detectNote(originalNote, changed) {
   const note = inputWhistle.checked
     ? adjustWhistle(originalNote, 2)
     : originalNote;
@@ -183,11 +234,18 @@ function detectNote(originalNote) {
                 elements[i]?.classList.remove('active');
               }
             }, 1000);
+
+            if (changed) {
+              try {
+                const fret = parseInt(elements[i].getAttribute('data-fret'));
+                const index = parseInt(elements[i].getAttribute('data-index'));
+                outputTab(fret, index);
+              } catch (error) {
+                console.log(error);
+              }
+            }
           } else {
             // TODO: Suggest similar note.
-            const fret = parseInt(
-              elements[i].parentElement.getAttribute('data-fret')
-            );
           }
         }
       } else {
@@ -208,6 +266,18 @@ function detectNote(originalNote) {
               element?.classList.remove('active');
             }
           }, 1000);
+
+          if (changed) {
+            try {
+              const fret = parseInt(element.getAttribute('data-fret'));
+              const index = parseInt(element.getAttribute('data-index'));
+              outputTab(fret, index);
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        } else {
+          // TODO: Suggest similar note.
         }
       }
     }
