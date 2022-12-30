@@ -135,6 +135,10 @@ button.active {
 }
 .column .header {
   background: var(--main-first);
+  cursor: default;
+}
+.column .header:hover {
+  transform: none;
 }
 .column .header.active-key {
   background: var(--accent-fourth);
@@ -145,6 +149,11 @@ button.active {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+  transition: transform 0.25s;
+}
+.column div:hover {
+  transform: scale(0.9);
 }
 
 .n2 {

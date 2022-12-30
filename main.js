@@ -144,7 +144,8 @@ function generateNoteColumn(column, notes) {
 
   notes.reverse().forEach((note, index) => {
     html += `
-			<div data-fret="${column}" data-index="${
+			<div onclick="outputTab(${column}, ${index + 1})" 
+			data-fret="${column}" data-index="${
       index + 1
     }" class="note ${note} ${getNoteColor(note)} index-${
       index + 1
