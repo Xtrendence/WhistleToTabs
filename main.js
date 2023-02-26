@@ -1,5 +1,6 @@
 const buttonStart = document.getElementById('start');
 const buttonStop = document.getElementById('stop');
+const buttonClear = document.getElementById('clear');
 
 const divOutput = document.getElementById('output');
 const divTabs = document.getElementById('tabs');
@@ -145,7 +146,7 @@ function generateNoteColumn(column, notes) {
 
   notes.reverse().forEach((note, index) => {
     html += `
-			<div onclick="outputTab(${column}, ${index + 1})" 
+			<div onclick="outputTab(${column}, ${index + 1}, undefined, true)" 
 			data-fret="${column}" data-index="${
       index + 1
     }" class="note ${note} ${getNoteColor(note)}" data-note="${getNote(
@@ -169,12 +170,46 @@ function clearCurrent() {
   spanCurrentPitch.textContent = '-';
 }
 
-function outputTab(fret, index) {
+function removeTab(tab, id) {
+  tab.remove();
+
+  try {
+    const current = localStorage.getItem('tabs')
+      ? JSON.parse(localStorage.getItem('tabs'))
+      : [];
+
+    const removed = current.filter((item) => item.id !== id);
+
+    localStorage.setItem('tabs', JSON.stringify(removed));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+function outputTab(fret, index, id, save) {
+  const current = localStorage.getItem('tabs')
+    ? JSON.parse(localStorage.getItem('tabs'))
+    : [];
+
+  let removeId = id
+    ? id
+    : new Date().getTime() + '-' + randomInt(100000, 999999);
+
+  if (!id) {
+    while (current.some((item) => item.id === removeId)) {
+      removeId = new Date().getTime() + '-' + randomInt(100000, 999999);
+    }
+  }
+
   const line =
     fret > 9 ? '<div class="line-4"></div>' : '<div class="line-3"></div>';
 
   let output = `
-		<div class="block">
+		<div class="block" onClick="removeTab(this, '${removeId}')">
 			${
         index === 1
           ? '<div class="line-2"></div> ' + fret + ' <div class="line-2"></div>'
@@ -209,6 +244,16 @@ function outputTab(fret, index) {
 	`;
 
   divTabs.innerHTML += output;
+
+  if (save) {
+    current.push({
+      id: removeId,
+      fret,
+      index,
+    });
+
+    localStorage.setItem('tabs', JSON.stringify(current));
+  }
 }
 
 function detectNote(originalNote, changed) {
@@ -241,7 +286,7 @@ function detectNote(originalNote, changed) {
               try {
                 const fret = parseInt(elements[i].getAttribute('data-fret'));
                 const index = parseInt(elements[i].getAttribute('data-index'));
-                outputTab(fret, index);
+                outputTab(fret, index, undefined, true);
               } catch (error) {
                 console.log(error);
               }
@@ -273,7 +318,7 @@ function detectNote(originalNote, changed) {
             try {
               const fret = parseInt(element.getAttribute('data-fret'));
               const index = parseInt(element.getAttribute('data-index'));
-              outputTab(fret, index);
+              outputTab(fret, index, undefined, true);
             } catch (error) {
               console.log(error);
             }
@@ -419,6 +464,18 @@ function getNote(textContent) {
   return textContent.charAt(0).toUpperCase();
 }
 
+const currentTabs = localStorage.getItem('tabs');
+if (currentTabs) {
+  try {
+    const array = JSON.parse(currentTabs);
+    array.forEach((item) => {
+      try {
+        outputTab(item.fret, item.index, item.id, false);
+      } catch (e) {}
+    });
+  } catch (e) {}
+}
+
 Object.keys(notes).forEach((key, index) => {
   divOutput.innerHTML += `<div data-fret="${index}" class="column fret-${index}">${generateNoteColumn(
     key,
@@ -450,6 +507,11 @@ buttonStart.addEventListener('click', () => {
 
 buttonStop.addEventListener('click', () => {
   stop();
+});
+
+buttonClear.addEventListener('click', () => {
+  divTabs.innerHTML = '';
+  localStorage.removeItem('tabs');
 });
 
 function empty(value) {

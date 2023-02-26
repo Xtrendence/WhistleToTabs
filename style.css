@@ -114,10 +114,17 @@ button.active {
 #output {
   display: flex;
   width: 100%;
+  max-width: 100%;
   justify-content: center;
   flex-direction: row;
   column-gap: 4px;
   margin-top: 20px;
+  overflow: auto hidden;
+}
+@media screen and (max-width: 1520px) {
+  #output {
+    justify-content: flex-start;
+  }
 }
 .column:first-of-type {
   background: var(--main-contrast);
@@ -238,11 +245,20 @@ button.active {
   display: flex;
   width: 100%;
   justify-content: center;
+  position: relative;
+}
+.current-wrapper button {
+  height: 44px;
+  padding: 0 10px;
+  align-self: center;
+  position: absolute;
+  left: 0;
 }
 .current-wrapper span {
   background: var(--main-fifth);
   padding: 10px;
   margin: 4px;
+  line-height: 24px;
   border-radius: var(--border-radius);
 }
 
@@ -255,6 +271,14 @@ button.active {
   display: inline-block;
   margin-bottom: 20px;
   color: var(--main-contrast);
+  cursor: pointer;
+  transition: transform 0.5s, background 0.5s, opacity 0.5s;
+  border-radius: 10px;
+}
+#tabs .block:hover {
+  transform: scale(0.8);
+  background: rgba(255, 0, 0, 0.5);
+  opacity: 0.8;
 }
 
 #tabs .line-2,
