@@ -10,6 +10,7 @@ const spanCurrentPitch = document.getElementById('current-pitch');
 const inputWhistle = document.getElementById('whistle');
 const inputMultiple = document.getElementById('multiple');
 const inputSingle = document.getElementById('single');
+const inputNoteColorMode = document.getElementById('note-color-mode');
 const inputKey = document.getElementById('key');
 const inputMinor = document.getElementById('minor');
 const inputPentatonic = document.getElementById('pentatonic');
@@ -147,9 +148,9 @@ function generateNoteColumn(column, notes) {
 			<div onclick="outputTab(${column}, ${index + 1})" 
 			data-fret="${column}" data-index="${
       index + 1
-    }" class="note ${note} ${getNoteColor(note)} index-${
-      index + 1
-    }"><span>${note}</span></div>
+    }" class="note ${note} ${getNoteColor(note)}" data-note="${getNote(
+      note
+    )}" index-${index + 1}"><span>${note}</span></div>
 		`;
   });
 
@@ -410,11 +411,25 @@ function detectKey() {
   }
 }
 
+function getNote(textContent) {
+  if (textContent.includes('#')) {
+    return textContent.substring(0, 2).toUpperCase();
+  }
+
+  return textContent.charAt(0).toUpperCase();
+}
+
 Object.keys(notes).forEach((key, index) => {
   divOutput.innerHTML += `<div data-fret="${index}" class="column fret-${index}">${generateNoteColumn(
     key,
     notes[key]
   )}</div>`;
+});
+
+inputNoteColorMode.addEventListener('change', () => {
+  divOutput.classList.contains('note-color')
+    ? divOutput.classList.remove('note-color')
+    : divOutput.classList.add('note-color');
 });
 
 inputMinor.addEventListener('change', () => {

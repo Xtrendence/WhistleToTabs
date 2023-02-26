@@ -156,6 +156,52 @@ button.active {
   transform: scale(0.9);
 }
 
+#output.note-color .column div[data-note='A'] {
+  background: red;
+  color: white;
+}
+#output.note-color .column div[data-note='A#'] {
+  background: darkred;
+  color: white;
+}
+#output.note-color .column div[data-note='B'] {
+  background: cyan;
+}
+#output.note-color .column div[data-note='C'] {
+  background: blue;
+  color: white;
+}
+#output.note-color .column div[data-note='C#'] {
+  background: darkblue;
+  color: white;
+}
+#output.note-color .column div[data-note='D'] {
+  background: orange;
+  color: white;
+}
+#output.note-color .column div[data-note='D#'] {
+  background: darkorange;
+  color: white;
+}
+#output.note-color .column div[data-note='E'] {
+  background: lightcoral;
+}
+#output.note-color .column div[data-note='F'] {
+  background: green;
+  color: white;
+}
+#output.note-color .column div[data-note='F#'] {
+  background: darkgreen;
+  color: white;
+}
+#output.note-color .column div[data-note='G'] {
+  background: khaki;
+}
+#output.note-color .column div[data-note='G#'] {
+  background: darkkhaki;
+  color: white;
+}
+
 .n2 {
   background: rgb(240, 160, 40);
 }
