@@ -166,7 +166,7 @@ function handleNoteClick(column, index) {
   }
 
   if (inputPlayOnClick.checked) {
-    playNote(index - 1, column);
+    playNote(index, column);
   }
 }
 
@@ -175,7 +175,7 @@ function generateNoteColumn(column, notes) {
 
   notes.reverse().forEach((note, index) => {
     html += `
-			<div onclick="handleNoteClick(${column}, ${index + 1}, undefined, true)" 
+			<div onclick="handleNoteClick(${column}, ${index}, undefined, true)" 
 			data-fret="${column}" data-index="${
       index + 1
     }" class="note ${note} ${getNoteColor(note)}" data-note="${getNote(
