@@ -17,6 +17,7 @@ const inputNoteColorMode = document.getElementById('note-color-mode');
 const inputTabOnWhistle = document.getElementById('tab-on-whistle');
 const inputTabOnClick = document.getElementById('tab-on-click');
 const inputPlayOnClick = document.getElementById('play-on-click');
+const inputDarkMode = document.getElementById('dark-mode');
 const inputKey = document.getElementById('key');
 const inputMinor = document.getElementById('minor');
 const inputPentatonic = document.getElementById('pentatonic');
@@ -154,6 +155,9 @@ function playNote(string, fret) {
   audio.classList.add('hidden');
   document.body.appendChild(audio);
   audio.play();
+  audio.addEventListener('ended', () => {
+    audio.remove();
+  });
 }
 
 function handleNoteClick(column, index) {
@@ -498,6 +502,7 @@ function saveSettings() {
     const tabOnWhistle = inputTabOnWhistle.checked;
     const tabOnClick = inputTabOnClick.checked;
     const playOnClick = inputPlayOnClick.checked;
+    const darkMode = inputDarkMode.checked;
     const musicKey = inputKey.value;
     const minorKey = inputMinor.checked;
     const pentatonicScale = inputPentatonic.checked;
@@ -513,6 +518,7 @@ function saveSettings() {
         tabOnWhistle,
         tabOnClick,
         playOnClick,
+        darkMode,
         musicKey,
         minorKey,
         pentatonicScale,
@@ -538,6 +544,12 @@ function loadSettings() {
       inputTabOnWhistle.checked = settings.tabOnWhistle;
       inputTabOnClick.checked = settings.tabOnClick;
       inputPlayOnClick.checked = settings.playOnClick;
+
+      inputDarkMode.checked = settings.darkMode;
+      if (inputDarkMode.checked) {
+        setTheme('dark');
+      }
+
       inputKey.value = settings.musicKey;
       inputMinor.checked = settings.minorKey;
       inputPentatonic.checked = settings.pentatonicScale;
@@ -546,6 +558,17 @@ function loadSettings() {
   } catch (error) {
     console.log(error);
   }
+}
+
+function setTheme(theme) {
+  if (theme === 'dark') {
+    document.documentElement.classList.remove('light');
+    document.documentElement.classList.add('dark');
+    return;
+  }
+
+  document.documentElement.classList.add('light');
+  document.documentElement.classList.remove('dark');
 }
 
 const currentTabs = localStorage.getItem('tabs');
@@ -573,6 +596,10 @@ inputNoteColorMode.addEventListener('change', () => {
   divOutput.classList.contains('note-color')
     ? divOutput.classList.remove('note-color')
     : divOutput.classList.add('note-color');
+});
+
+inputDarkMode.addEventListener('change', () => {
+  setTheme(inputDarkMode.checked ? 'dark' : 'light');
 });
 
 inputMinor.addEventListener('change', () => {

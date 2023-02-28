@@ -140,6 +140,17 @@ button.active {
   background: rgb(109, 48, 126);
   color: var(--accent-contrast);
 }
+
+.settings {
+  display: flex;
+  max-width: 750px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.settings div {
+  width: 250px;
+}
+
 #output {
   display: flex;
   width: 100%;
