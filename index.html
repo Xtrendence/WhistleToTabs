@@ -27,6 +27,14 @@
       <label for="note-color-mode">Note Color Mode</label>
     </div>
     <div>
+      <input id="tab-on-click" type="checkbox" />
+      <label for="tab-on-click">Output Tab On Click</label>
+    </div>
+    <div>
+      <input id="play-on-click" type="checkbox" checked />
+      <label for="play-on-click">Play Note On Click</label>
+    </div>
+    <div>
       <input id="key" type="text" placeholder="Key..." />
       <input id="minor" type="checkbox" checked />
       <label for="minor">Minor</label>
@@ -36,6 +44,8 @@
     <div id="output"></div>
     <div class="current-wrapper">
       <button id="clear">Clear Tabs</button>
+      <button id="play">Play Tabs</button>
+      <input id="speed" type="text" placeholder="Speed..." value="600" />
       <span id="current-note">-</span>
       <span id="current-pitch">-</span>
     </div>

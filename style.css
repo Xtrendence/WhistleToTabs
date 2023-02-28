@@ -248,12 +248,30 @@ button.active {
   justify-content: center;
   position: relative;
 }
-.current-wrapper button {
+.current-wrapper #clear {
   height: 44px;
   padding: 0 10px;
   align-self: center;
   position: absolute;
   left: 0;
+  width: 100px;
+}
+.current-wrapper #play {
+  height: 44px;
+  padding: 0 10px;
+  align-self: center;
+  position: absolute;
+  width: 100px;
+  left: 120px;
+}
+.current-wrapper #speed {
+  height: 44px;
+  padding: 0 10px;
+  align-self: center;
+  position: absolute;
+  width: 100px;
+  left: 240px;
+  margin: 0;
 }
 .current-wrapper span {
   background: var(--main-fifth);

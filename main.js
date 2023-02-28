@@ -1,6 +1,7 @@
 const buttonStart = document.getElementById('start');
 const buttonStop = document.getElementById('stop');
 const buttonClear = document.getElementById('clear');
+const buttonPlay = document.getElementById('play');
 
 const divOutput = document.getElementById('output');
 const divTabs = document.getElementById('tabs');
@@ -12,9 +13,12 @@ const inputWhistle = document.getElementById('whistle');
 const inputMultiple = document.getElementById('multiple');
 const inputSingle = document.getElementById('single');
 const inputNoteColorMode = document.getElementById('note-color-mode');
+const inputTabOnClick = document.getElementById('tab-on-click');
+const inputPlayOnClick = document.getElementById('play-on-click');
 const inputKey = document.getElementById('key');
 const inputMinor = document.getElementById('minor');
 const inputPentatonic = document.getElementById('pentatonic');
+const inputSpeed = document.getElementById('speed');
 
 const voice = new Wad({ source: 'mic' });
 
@@ -141,12 +145,31 @@ function getFretForKey(key) {
   }
 }
 
+function playNote(string, fret) {
+  const file = `./mp3/${string}-${fret}.mp3`;
+  const audio = document.createElement('audio');
+  audio.src = file;
+  audio.classList.add('hidden');
+  document.body.appendChild(audio);
+  audio.play();
+}
+
+function handleNoteClick(column, index) {
+  if (inputTabOnClick.checked) {
+    outputTab(column, index + 1, undefined, true);
+  }
+
+  if (inputPlayOnClick.checked) {
+    playNote(index - 1, column);
+  }
+}
+
 function generateNoteColumn(column, notes) {
   let html = `<div class="header"><span>${column}</span></div>`;
 
   notes.reverse().forEach((note, index) => {
     html += `
-			<div onclick="outputTab(${column}, ${index + 1}, undefined, true)" 
+			<div onclick="handleNoteClick(${column}, ${index + 1}, undefined, true)" 
 			data-fret="${column}" data-index="${
       index + 1
     }" class="note ${note} ${getNoteColor(note)}" data-note="${getNote(
@@ -512,6 +535,25 @@ buttonStop.addEventListener('click', () => {
 buttonClear.addEventListener('click', () => {
   divTabs.innerHTML = '';
   localStorage.removeItem('tabs');
+});
+
+buttonPlay.addEventListener('click', () => {
+  try {
+    const speed = parseInt(inputSpeed.value);
+    const tabs = localStorage.getItem('tabs');
+    const array = JSON.parse(tabs);
+
+    let delay = 0;
+    array.forEach((item) => {
+      try {
+        setTimeout(() => {
+          playNote(item.index - 1, item.fret);
+        }, delay);
+      } catch (e) {}
+
+      delay += speed;
+    });
+  } catch (e) {}
 });
 
 function empty(value) {
