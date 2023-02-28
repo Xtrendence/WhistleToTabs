@@ -1,5 +1,6 @@
 const buttonStart = document.getElementById('start');
 const buttonStop = document.getElementById('stop');
+const buttonSaveSettings = document.getElementById('save-settings');
 const buttonClear = document.getElementById('clear');
 const buttonPlay = document.getElementById('play');
 
@@ -488,6 +489,65 @@ function getNote(textContent) {
   return textContent.charAt(0).toUpperCase();
 }
 
+function saveSettings() {
+  try {
+    const whistleMode = inputWhistle.checked;
+    const showMultiple = inputMultiple.checked;
+    const singleString = inputSingle.checked;
+    const noteColorMode = inputNoteColorMode.checked;
+    const tabOnWhistle = inputTabOnWhistle.checked;
+    const tabOnClick = inputTabOnClick.checked;
+    const playOnClick = inputPlayOnClick.checked;
+    const musicKey = inputKey.value;
+    const minorKey = inputMinor.checked;
+    const pentatonicScale = inputPentatonic.checked;
+    const playSpeed = inputSpeed.value;
+
+    localStorage.setItem(
+      'settings',
+      JSON.stringify({
+        whistleMode,
+        showMultiple,
+        singleString,
+        noteColorMode,
+        tabOnWhistle,
+        tabOnClick,
+        playOnClick,
+        musicKey,
+        minorKey,
+        pentatonicScale,
+        playSpeed,
+      })
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function loadSettings() {
+  try {
+    const data = localStorage.getItem('settings');
+
+    if (data) {
+      const settings = JSON.parse(data);
+
+      inputWhistle.checked = settings.whistleMode;
+      inputMultiple.checked = settings.showMultiple;
+      inputSingle.checked = settings.singleString;
+      inputNoteColorMode.checked = settings.noteColorMode;
+      inputTabOnWhistle.checked = settings.tabOnWhistle;
+      inputTabOnClick.checked = settings.tabOnClick;
+      inputPlayOnClick.checked = settings.playOnClick;
+      inputKey.value = settings.musicKey;
+      inputMinor.checked = settings.minorKey;
+      inputPentatonic.checked = settings.pentatonicScale;
+      inputSpeed.value = settings.playSpeed;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const currentTabs = localStorage.getItem('tabs');
 if (currentTabs) {
   try {
@@ -499,6 +559,8 @@ if (currentTabs) {
     });
   } catch (e) {}
 }
+
+loadSettings();
 
 Object.keys(notes).forEach((key, index) => {
   divOutput.innerHTML += `<div data-fret="${index}" class="column fret-${index}">${generateNoteColumn(
@@ -531,6 +593,10 @@ buttonStart.addEventListener('click', () => {
 
 buttonStop.addEventListener('click', () => {
   stop();
+});
+
+buttonSaveSettings.addEventListener('click', () => {
+  saveSettings();
 });
 
 buttonClear.addEventListener('click', () => {

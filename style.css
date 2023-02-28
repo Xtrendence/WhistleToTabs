@@ -273,6 +273,14 @@ button.active {
   left: 240px;
   margin: 0;
 }
+.current-wrapper #save-settings {
+  height: 44px;
+  padding: 0 10px;
+  align-self: center;
+  position: absolute;
+  width: 120px;
+  right: 0;
+}
 .current-wrapper span {
   background: var(--main-fifth);
   padding: 10px;
