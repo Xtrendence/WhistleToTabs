@@ -13,6 +13,7 @@ const inputWhistle = document.getElementById('whistle');
 const inputMultiple = document.getElementById('multiple');
 const inputSingle = document.getElementById('single');
 const inputNoteColorMode = document.getElementById('note-color-mode');
+const inputTabOnWhistle = document.getElementById('tab-on-whistle');
 const inputTabOnClick = document.getElementById('tab-on-click');
 const inputPlayOnClick = document.getElementById('play-on-click');
 const inputKey = document.getElementById('key');
@@ -337,7 +338,7 @@ function detectNote(originalNote, changed) {
             }
           }, 1000);
 
-          if (changed) {
+          if (changed && inputTabOnWhistle.checked) {
             try {
               const fret = parseInt(element.getAttribute('data-fret'));
               const index = parseInt(element.getAttribute('data-index'));
