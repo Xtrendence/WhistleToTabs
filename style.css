@@ -1,19 +1,4 @@
 html {
-  --shadow-dark: 0 6px 10px rgba(40, 40, 40, 0.25);
-  --shadow-darker: 0 6px 10px rgba(40, 40, 40, 0.4);
-  --shadow-smooth: 0 1px 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.05),
-    0 4px 4px rgba(0, 0, 0, 0.06), 0 8px 8px rgba(0, 0, 0, 0.1);
-  --shadow-accent: 0 0 12px rgba(0, 150, 255, 0.9);
-  --main-first: rgb(255, 255, 255);
-  --main-first-transparent: rgba(255, 255, 255, 0.7);
-  --main-second: rgb(245, 245, 245);
-  --main-third: rgb(235, 235, 235);
-  --main-third-transparent: rgba(235, 235, 235, 0.9);
-  --main-fourth: rgb(225, 225, 225);
-  --main-fifth: rgb(215, 215, 215);
-  --main-contrast: rgb(50, 50, 50);
-  --main-contrast-light: rgb(100, 100, 100);
-  --main-contrast-lightest: rgb(150, 150, 150);
   --accent-first: rgb(137, 121, 211);
   --accent-first-transparent: rgba(137, 121, 211, 0.25);
   --accent-first-transparent-low: rgba(137, 121, 211, 0.5);
@@ -46,6 +31,42 @@ html {
   --border-radius: 10px;
   --font-family: 'Helvetica Neue', 'Lucida Grande', 'Arial', 'Verdana', 'Tahoma',
     sans-serif;
+}
+
+html.light {
+  --shadow-dark: 0 6px 10px rgba(40, 40, 40, 0.25);
+  --shadow-darker: 0 6px 10px rgba(40, 40, 40, 0.4);
+  --shadow-smooth: 0 1px 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.05),
+    0 4px 4px rgba(0, 0, 0, 0.06), 0 8px 8px rgba(0, 0, 0, 0.1);
+  --shadow-accent: 0 0 12px rgba(0, 150, 255, 0.9);
+  --main-first: rgb(255, 255, 255);
+  --main-first-transparent: rgba(255, 255, 255, 0.7);
+  --main-second: rgb(245, 245, 245);
+  --main-third: rgb(235, 235, 235);
+  --main-third-transparent: rgba(235, 235, 235, 0.9);
+  --main-fourth: rgb(225, 225, 225);
+  --main-fifth: rgb(215, 215, 215);
+  --main-contrast: rgb(50, 50, 50);
+  --main-contrast-light: rgb(100, 100, 100);
+  --main-contrast-lightest: rgb(150, 150, 150);
+}
+
+html.dark {
+  --shadow-dark: 0 6px 10px rgba(40, 40, 40, 0.25);
+  --shadow-darker: 0 6px 10px rgba(40, 40, 40, 0.4);
+  --shadow-smooth: 0 1px 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.05),
+    0 4px 4px rgba(0, 0, 0, 0.06), 0 8px 8px rgba(0, 0, 0, 0.1);
+  --shadow-accent: 0 0 12px rgba(0, 150, 255, 0.9);
+  --main-first: rgb(10, 10, 10);
+  --main-first-transparent: rgba(10, 10, 10, 0.7);
+  --main-second: rgb(25, 25, 25);
+  --main-third: rgb(40, 40, 40);
+  --main-third-transparent: rgba(40, 40, 40, 0.9);
+  --main-fourth: rgb(50, 50, 50);
+  --main-fifth: rgb(65, 65, 65);
+  --main-contrast: rgb(255, 255, 255);
+  --main-contrast-light: rgb(230, 230, 230);
+  --main-contrast-lightest: rgb(200, 200, 200);
 }
 
 html {
@@ -102,6 +123,14 @@ input[type='text'] {
   padding: 10px;
   border-radius: var(--border-radius);
   margin-top: 10px;
+}
+
+input {
+  background: var(--main-first);
+  color: var(--main-contrast);
+}
+input::placeholder {
+  color: var(--main-contrast-lightest);
 }
 
 .buttons {
@@ -226,7 +255,6 @@ button.active {
 }
 
 .column div.active {
-  /* background: rgb(190, 25, 25); */
   color: var(--accent-contrast);
 }
 .column:nth-of-type(even) div.active {
