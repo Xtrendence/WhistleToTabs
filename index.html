@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="light">
+<html class="dark">
   <head>
     <title>Whistle to Tabs</title>
     <script src="./wad/web-audio-daw/build/wad.min.js"></script>
@@ -11,45 +11,60 @@
       <button class="active" id="stop">Stop</button>
     </div>
     <div class="settings">
-      <div>
-        <input id="whistle" type="checkbox" />
+      <label class="checkbox-container">
+        <input class="noselect" id="whistle" type="checkbox" />
         <label for="whistle">Whistle Mode</label>
-      </div>
-      <div>
-        <input id="multiple" type="checkbox" />
+        <span class="checkbox"></span>
+      </label>
+      <label class="checkbox-container">
+        <input class="noselect" id="multiple" type="checkbox" />
         <label for="multiple">Show Multiple</label>
-      </div>
-      <div>
-        <input id="single" type="checkbox" />
+        <span class="checkbox"></span>
+      </label>
+      <label class="checkbox-container">
+        <input class="noselect" id="single" type="checkbox" />
         <label for="single">Single String</label>
-      </div>
-      <div>
-        <input id="note-color-mode" type="checkbox" />
+        <span class="checkbox"></span>
+      </label>
+      <label class="checkbox-container">
+        <input class="noselect" id="note-color-mode" type="checkbox" />
         <label for="note-color-mode">Note Color Mode</label>
-      </div>
-      <div>
-        <input id="tab-on-whistle" type="checkbox" checked />
+        <span class="checkbox"></span>
+      </label>
+      <label class="checkbox-container">
+        <input class="noselect" id="tab-on-whistle" type="checkbox" checked />
         <label for="tab-on-whistle">Output Tab On Whistle</label>
-      </div>
-      <div>
-        <input id="tab-on-click" type="checkbox" checked />
+        <span class="checkbox"></span>
+      </label>
+      <label class="checkbox-container">
+        <input class="noselect" id="tab-on-click" type="checkbox" checked />
         <label for="tab-on-click">Output Tab On Click</label>
-      </div>
-      <div>
-        <input id="play-on-click" type="checkbox" checked />
+        <span class="checkbox"></span>
+      </label>
+      <label class="checkbox-container">
+        <input class="noselect" id="play-on-click" type="checkbox" checked />
         <label for="play-on-click">Play Note On Click</label>
-      </div>
-      <div>
-        <input id="dark-mode" type="checkbox" checked />
+        <span class="checkbox"></span>
+      </label>
+      <label class="checkbox-container">
+        <input class="noselect" id="dark-mode" type="checkbox" checked />
         <label for="dark-mode">Dark Mode</label>
-      </div>
+        <span class="checkbox"></span>
+      </label>
     </div>
-    <div>
+    <div class="key-container">
       <input id="key" type="text" placeholder="Key..." />
-      <input id="minor" type="checkbox" checked />
-      <label for="minor">Minor</label>
-      <input id="pentatonic" type="checkbox" />
-      <label for="pentatonic">Pentatonic</label>
+      <label class="checkbox-container">
+        <input class="noselect" id="minor" type="checkbox" checked />
+        <label for="minor">Minor</label>
+        <span class="checkbox"></span>
+      </label>
+      <label class="checkbox-container">
+        <input class="noselect" id="pentatonic" type="checkbox" />
+        <label for="pentatonic">Pentatonic</label>
+
+        <span class="checkbox"></span>
+      </label>
     </div>
     <div id="output"></div>
     <div class="current-wrapper">
